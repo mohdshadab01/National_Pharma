@@ -1,0 +1,1 @@
+web: gunicorn national_pharma.wsgi

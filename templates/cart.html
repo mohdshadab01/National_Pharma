@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - National Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-light">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{% url 'home' %}" class="text-decoration-none d-flex align-items-center gap-2">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="site-logo" style="height:45px;">
+                <span class="fs-4 fw-bold"><span class="text-red">National</span> <span class="text-blue">Pharma</span></span>
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">← Continue Shopping</a>
+        </div>
+    </nav>
+
+    <!-- Cart Items Section -->
+    <div class="container my-5">
+        <h2 class="fw-bold mb-4">Your Shopping Cart 🛒</h2>
+
+        {% if cart_items %}
+        <div class="table-responsive bg-white p-4 rounded shadow-sm">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td><strong>{{ item.medicine.name }}</strong></td>
+                        <td>₹{{ item.medicine.price }}</td>
+                        <td><span class="badge bg-secondary fs-6">{{ item.quantity }}</span></td>
+                        <td class="fw-bold text-success">₹{{ item.item_total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'clear_cart' %}" class="btn btn-outline-danger">Clear Cart</a>
+                <div>
+                    <h4 class="fw-bold me-3 d-inline">Total: <span class="text-primary">₹{{ total_price }}</span></h4>
+                    <button class="btn btn-success btn-lg ms-3">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="text-center bg-white p-5 rounded shadow-sm">
+            <h4 class="text-muted">Aapka cart abhi khaali hai! 🛒</h4>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">Medicines Add Karein</a>
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
