@@ -86,3 +86,13 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.medicine.name}"
+    from django.db import models
+
+class Prescription(models.Model):
+    patient_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15)
+    prescription_file = models.FileField(upload_to='prescriptions/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.patient_name} - {self.uploaded_at.strftime('%Y-%m-%d')}"

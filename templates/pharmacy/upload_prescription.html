@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; padding: 25px; border: 1px solid #ddd; border-radius: 8px; font-family: Arial, sans-serif;">
+    <h2 style="color: #333; margin-bottom: 20px;">Upload Doctor Prescription</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Patient Name:</label><br>
+            <input type="text" name="patient_name" required style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight: bold;">Phone Number:</label><br>
+            <input type="text" name="phone_number" required style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold;">Prescription Image (PNG/JPG):</label><br>
+            <input type="file" name="prescription_file" accept="image/*" required style="width: 100%; margin-top: 5px;">
+        </div>
+        <button type="submit" style="background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px;">
+            Upload & Auto-Detect Medicines
+        </button>
+    </form>
+</div>
+{% endblock %}
