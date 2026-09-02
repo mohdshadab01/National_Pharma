@@ -1,0 +1,28 @@
+{% extends 'pharmacy/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h2 class="fw-bold mb-4">Search OpenFDA Medicines</h2>
+            <form method="GET" action="{% url 'medicine_search' %}" class="d-flex gap-2">
+                <input type="text" name="q" class="form-control form-control-lg rounded-pill" placeholder="Enter medicine name..." value="{{ query }}" required>
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Search</button>
+            </form>
+        </div>
+    </div>
+
+    {% if med_info %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
+                <h3 class="fw-bold text-primary">{{ med_info.name }}</h3>
+                <p class="text-muted"><strong>Uses:</strong> {{ med_info.uses }}</p>
+                <p class="text-danger"><strong>Side Effects:</strong> {{ med_info.side_effects }}</p>
+                <h5 class="fw-bold text-success">Price: ₹{{ med_info.price }}</h5>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
