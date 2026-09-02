@@ -1,26 +1,46 @@
 {% extends 'pharmacy/base.html' %}
 
 {% block content %}
-<div class="bg-primary text-white py-5 text-center">
-    <div class="container py-4">
+<div class="container">
+    <div class="hero-banner text-center my-4">
         <h1 class="display-4 fw-bold">Advanced Healthcare & Microbiology</h1>
-        <p class="lead">AI-Powered Prescription Reader and Real-time FDA Medicine Search Portal</p>
-        <a href="{% url 'upload_prescription' %}" class="btn btn-warning btn-lg rounded-pill fw-bold mt-3 me-2">Scan Prescription</a>
-        <a href="{% url 'medicine_search' %}" class="btn btn-outline-light btn-lg rounded-pill mt-3">Search Medicines</a>
-    </div>
-</div>
-
-<div class="container my-5">
-    <h3 class="fw-bold text-center text-primary mb-4">Medical Science Quotes</h3>
-    <div class="row g-4">
-        {% for q in quotes %}
-        <div class="col-md-4">
-            <div class="p-4 bg-white shadow-sm rounded-3 border-start border-4 border-primary">
-                <p class="fst-italic text-dark">"{{ q.quote }}"</p>
-                <h6 class="fw-bold text-primary mb-0">— {{ q.author }}</h6>
-            </div>
+        <p class="lead mb-4">AI-Powered Prescription Reader and Real-time FDA Medicine Search Portal</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'upload_prescription' %}" class="btn btn-warning btn-lg fw-bold px-4">Scan Prescription</a>
+            <a href="{% url 'medicine_search' %}" class="btn btn-light btn-lg text-primary fw-bold px-4">Search Medicines</a>
         </div>
-        {% endfor %}
+    </div>
+
+    <div id="about" class="row my-5 align-items-center bg-white p-4 rounded shadow-sm">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold mb-3"><i class="fa-solid fa-hospital-user me-2"></i>About National Pharma</h2>
+            <p class="text-muted fs-5">
+                National Pharma is dedicated to revolutionizing pharmaceutical access and research. By combining real-time drug database querying with cutting-edge AI vision technology, we empower patients and healthcare workers with accurate prescription decoding and laboratory intelligence.
+            </p>
+            <h4 class="text-primary fw-bold mt-4"><i class="fa-solid fa-eye me-2"></i>Our Vision</h4>
+            <p class="text-muted fs-6">
+                To create a seamless, error-free ecosystem bridging microbiology laboratories, digital pharmacies, and patients using artificial intelligence.
+            </p>
+        </div>
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80" alt="About National Pharma" class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h3 class="text-center text-primary mb-4 fw-bold">Medical Science Quotes</h3>
+        <div class="row">
+            {% for q in quotes %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 border-0 shadow-sm p-3 bg-white">
+                    <blockquote class="blockquote mb-0 card-body">
+                        <p class="fs-6 text-dark">"{{ q.quote }}"</p>
+                        <footer class="blockquote-footer text-primary text-end mt-2">{{ q.author }}</footer>
+                    </blockquote>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

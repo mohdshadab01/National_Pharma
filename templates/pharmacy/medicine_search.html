@@ -1,28 +1,31 @@
 {% extends 'pharmacy/base.html' %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
-            <h2 class="fw-bold mb-4">Search OpenFDA Medicines</h2>
-            <form method="GET" action="{% url 'medicine_search' %}" class="d-flex gap-2">
-                <input type="text" name="q" class="form-control form-control-lg rounded-pill" placeholder="Enter medicine name..." value="{{ query }}" required>
-                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Search</button>
+            <h2 class="text-primary fw-bold mb-4">Search OpenFDA Medicines</h2>
+            <form method="GET" action="{% url 'medicine_search' %}" class="d-flex gap-2 mb-4">
+                <input type="text" name="q" value="{{ query }}" class="form-control form-control-lg" placeholder="Enter medicine name (e.g. Paracetamol, Nexdom)..." required>
+                <button type="submit" class="btn btn-primary btn-lg px-4"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
             </form>
-        </div>
-    </div>
 
-    {% if med_info %}
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
-            <div class="card border-0 shadow-sm p-4 rounded-4 bg-white">
-                <h3 class="fw-bold text-primary">{{ med_info.name }}</h3>
-                <p class="text-muted"><strong>Uses:</strong> {{ med_info.uses }}</p>
-                <p class="text-danger"><strong>Side Effects:</strong> {{ med_info.side_effects }}</p>
-                <h5 class="fw-bold text-success">Price: ₹{{ med_info.price }}</h5>
+            {% if med_info %}
+            <div class="card shadow border-0 text-start bg-white p-4 mt-4">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center mb-3 mb-md-0">
+                        <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80" class="img-fluid rounded shadow-sm border" alt="{{ med_info.name }}">
+                    </div>
+                    <div class="col-md-8">
+                        <h3 class="text-primary fw-bold">{{ med_info.name }}</h3>
+                        <p><strong>Uses:</strong> <span class="text-muted">{{ med_info.uses }}</span></p>
+                        <p><strong>Side Effects:</strong> <span class="text-danger">{{ med_info.side_effects }}</span></p>
+                        <h4 class="text-success fw-bold">Price: ₹{{ med_info.price }}</h4>
+                    </div>
+                </div>
             </div>
+            {% endif %}
         </div>
     </div>
-    {% endif %}
 </div>
 {% endblock %}
