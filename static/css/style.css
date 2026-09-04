@@ -1,378 +1,84 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-html {
-    scroll-behavior: smooth;
+:root {
+    --primary-red: #d32f2f;
+    --dark-red: #b71c1c;
+    --primary-blue: #0d47a1;
+    --light-blue: #1976d2;
+    --bg-color: #f8f9fa;
 }
 
 body {
-    background-color: #f4f7fe;
-    color: #2b2d42;
+    margin: 0;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background-color: var(--bg-color);
 }
 
-/* Color Classes for Text */
-.text-red {
-    color: #e63946 !important;
-}
-
-.text-blue {
-    color: #007bff !important;
-}
-
-.plus-icon {
-    color: #e63946;
-    font-size: 26px;
-    margin-right: 2px;
-}
-
-/* --- Navigation Bar --- */
-nav {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 50px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-nav .logo {
-    font-size: 26px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #4a5568;
-    font-weight: 600;
-    margin: 0 12px;
-    transition: all 0.3s ease;
-}
-
-nav a:hover {
-    color: #007bff;
-}
-
-.user-badge {
-    font-weight: 600;
-    color: #007bff;
-    margin-left: 10px;
-}
-
-/* Auth Buttons */
-.auth-btn {
-    padding: 8px 18px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: 0.3s ease;
-}
-
-.btn-login {
-    background: linear-gradient(45deg, #007bff, #0056b3);
-    color: white !important;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-}
-
-.btn-register {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    color: white !important;
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-}
-
-.btn-logout {
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
-    color: white !important;
-}
-
-.auth-btn:hover {
-    transform: translateY(-2px);
-}
-
-/* --- Hero Banner --- */
-.hero {
-    position: relative;
-    height: 85vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.hero-container {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #1565c0 50%, var(--primary-red) 100%);
     color: white;
-    background: linear-gradient(135deg, rgba(10, 25, 47, 0.85), rgba(0, 114, 255, 0.75)), 
-                url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-    padding: 20px;
+    padding: 60px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--dark-red);
 }
 
 .hero-title {
-    font-size: 55px;
+    font-size: 2.6rem;
     font-weight: 700;
-    letter-spacing: 1px;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
-.hero p {
-    font-size: 22px;
-    font-weight: 300;
-    margin-bottom: 30px;
-    color: #e2e8f0;
-    max-width: 650px;
+.hero-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
 }
 
-.hero .btn-explore {
-    padding: 14px 35px;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 50px;
-    background: linear-gradient(45deg, #00c6ff, #007bff);
+.btn-red {
+    background-color: var(--primary-red);
     color: white;
-    text-decoration: none;
-    box-shadow: 0 10px 25px rgba(0, 198, 255, 0.4);
-    transition: all 0.3s ease;
-}
-
-.hero .btn-explore:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 15px 30px rgba(0, 198, 255, 0.6);
-    color: white;
-}
-
-/* --- Section Titles --- */
-.section-title {
-    text-align: center;
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    background: linear-gradient(45deg, #1e3c72, #2a5298);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(45deg, #007bff, #00c6ff);
-    display: block;
-    margin: 8px auto 0 auto;
-    border-radius: 2px;
-}
-
-/* --- About Section --- */
-.about-section {
-    padding: 70px 20px;
-    background: white;
-}
-
-.about-text {
-    text-align: center;
-    max-width: 800px;
-    margin: 20px auto 0 auto;
-    line-height: 1.8;
-    color: #64748b;
-    font-size: 16px;
-}
-
-/* --- Medicines Section --- */
-.med-section {
-    padding-top: 30px;
-}
-
-.medicine-card {
     border: none;
-    border-radius: 18px;
-    overflow: hidden;
-    background: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
-
-.medicine-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0,123,255,0.15);
-}
-
-.med-img {
-    height: 200px;
-    object-fit: cover;
-}
-
-.no-img-placeholder {
-    background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #0284c7;
-}
-
-.placeholder-icon {
-    font-size: 55px;
-}
-
-.placeholder-text {
+    padding: 12px 26px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
     font-weight: 600;
-    margin-top: 5px;
 }
 
-.med-title {
-    font-weight: 700;
-    color: #1e293b;
+.btn-red:hover {
+    background-color: var(--dark-red);
 }
 
-.med-desc {
-    font-size: 14px;
-}
-
-.med-price {
-    color: #10b981;
-}
-
-.btn-add-cart {
-    background: linear-gradient(45deg, #007bff, #00c6ff);
+.btn-blue {
+    background-color: var(--primary-blue);
     color: white;
-    font-weight: 600;
-    border-radius: 10px;
-    padding: 10px;
     border: none;
-}
-
-/* --- Services Section --- */
-.service-section {
-    padding-top: 30px;
-}
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-top: 40px;
-}
-
-.service-card {
-    background: white;
-    padding: 35px 25px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    border-bottom: 4px solid #007bff;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    background: linear-gradient(135deg, #ffffff, #f0f7ff);
-    border-bottom: 4px solid #00c6ff;
-}
-
-.service-card .icon {
-    font-size: 45px;
-    margin-bottom: 15px;
-}
-
-.service-heading {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.service-desc {
-    color: #64748b;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-/* --- Floating Contact Buttons --- */
-.floating-contact-box {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 1000;
-}
-
-.contact-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 22px;
-    border-radius: 50px;
-    color: white;
+    padding: 12px 26px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
     font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-    font-size: 14px;
 }
 
-.contact-btn:hover {
-    transform: scale(1.08);
+.card-container {
+    background: white;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    border-top: 4px solid var(--primary-blue);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.footer-container {
+    background-color: #0a192f;
     color: white;
-}
-
-.btn-whatsapp {
-    background: linear-gradient(45deg, #25D366, #128C7E);
-}
-
-.btn-call {
-    background: linear-gradient(45deg, #007bff, #00c6ff);
-}
-
-/* --- Footer --- */
-footer {
-    background: #0f172a;
-    color: #94a3b8;
-    padding: 40px 20px;
     text-align: center;
+    padding: 30px 20px;
+    border-top: 4px solid var(--primary-red);
 }
 
-footer h3 {
-    color: white;
+.quotes-slider {
+    color: #ffca28;
+    font-style: italic;
     margin-bottom: 15px;
-}
-
-footer a {
-    color: #38bdf8;
-    text-decoration: none;
-}
-
-.contact-info {
-    margin: 10px 0;
-}
-
-.copyright-text {
-    font-size: 13px;
-    margin-top: 15px;
-    color: #64748b;
-}
-
-/* --- Custom 3D Logo Styling --- */
-.site-logo {
-    height: 50px;
-    width: auto;
-    border-radius: 50%;
-    object-fit: contain;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.site-logo:hover {
-    transform: scale(1.08) rotate(3deg);
-    box-shadow: 0 6px 18px rgba(230, 57, 70, 0.3);
+    font-size: 1.05rem;
 }

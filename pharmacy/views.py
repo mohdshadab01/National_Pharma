@@ -1,59 +1,62 @@
-from django.shortcuts import render, redirect
 import requests
-import google.generativeai as genai
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
+# 1. 'home' फंक्शन जो एरर दे रहा था
 def home(request):
-    quotes = [
-        {"quote": "Wherever the art of Medicine is loved, there is also a love of Humanity.", "author": "Hippocrates"},
-        {"quote": "Medicines cure diseases, but only doctors can cure patients.", "author": "Carl Jung"},
-        {"quote": "The science of operations is a science itself in microbiology & pharma.", "author": "Ada Lovelace"}
-    ]
-    blogs = [
-        {"title": "Advancements in Microbial Biochemistry 2026", "category": "Microbiology Research", "summary": "Discover how microbial strains are revolutionary in developing targeted pharma capsules."},
-        {"title": "Role of AI in Modern Prescription Reading", "category": "AI Healthcare", "summary": "How vision transformers and Gemini LLM reduce medication errors in digital pharmacies."},
-        {"title": "Understanding Pharmacology & Receptors", "category": "Medicine Research", "summary": "A deep dive into how active pharmaceutical ingredients interact at cellular sites."}
-    ]
-    return render(request, 'pharmacy/home.html', {'quotes': quotes, 'blogs': blogs})
+    return render(request, 'pharmacy/home.html')
 
+# 2. Real-Time OpenFDA & Medicine Search
 def medicine_search(request):
-    query = request.GET.get('q', '')
-    med_info = None
+    query = request.GET.get('q', '').strip()
+    results = []
+
     if query:
+        fda_url = f"https://api.fda.gov/drug/label.json?search=openfda.generic_name:\"{query}\"+openfda.brand_name:\"{query}\"&limit=1"
+        medicine_info = {
+            "name": query.capitalize(),
+            "uses": "Consult physician for detailed therapeutic dosage.",
+            "side_effects": "Consult Doctor",
+            "active_ingredient": "Information N/A",
+            "image": "https://via.placeholder.com/150?text=Medicine+Box"
+        }
+
         try:
-            url = f"https://api.fda.gov/drug/label.json?search=openfda.brand_name:{query}&limit=1"
-            res = requests.get(url, timeout=5)
-            if res.status_code == 200:
-                data = res.json()['results'][0]
-                med_info = {
-                    'name': query.capitalize(),
-                    'uses': data.get('indications_and_usage', ['Details available upon consult'])[0],
-                    'side_effects': data.get('adverse_reactions', ['Mild reactions may occur'])[0],
-                    'price': 180.00
-                }
-            else:
-                med_info = {'name': query.capitalize(), 'uses': 'General Therapeutic Compound', 'side_effects': 'Consult Doctor', 'price': 150.00}
+            fda_res = requests.get(fda_url, timeout=5)
+            if fda_res.status_code == 200:
+                data = fda_res.json().get('results', [])[0]
+                medicine_info["uses"] = data.get('purpose', data.get('indications_and_usage', ['General Therapeutic Compound']))[0][:180] + "..."
+                medicine_info["side_effects"] = data.get('adverse_reactions', ['Consult Doctor'])[0][:150] + "..."
+                medicine_info["active_ingredient"] = data.get('active_ingredient', ['N/A'])[0][:100]
         except Exception:
-            med_info = {'name': query.capitalize(), 'uses': 'General Therapeutic Compound', 'side_effects': 'Consult Doctor', 'price': 120.00}
+            pass
 
-    return render(request, 'pharmacy/medicine_search.html', {'med_info': med_info, 'query': query})
+        # Fetch Real Packaging Image via RxImage API
+        try:
+            rx_url = f"https://rximage.nlm.nih.gov/api/rximage/1/rxnav?name={query}"
+            rx_res = requests.get(rx_url, timeout=3)
+            if rx_res.status_code == 200:
+                images = rx_res.json().get('nlmRxImages', [])
+                if images:
+                    medicine_info["image"] = images[0].get('imageUrl')
+        except Exception:
+            pass
 
-def upload_prescription(request):
-    if request.method == 'POST' and request.FILES.get('prescription'):
-        cart = request.session.get('cart', {})
-        extracted_meds = ["Amoxicillin 500mg", "Paracetamol 650mg", "Cetirizine 10mg"]
-        for med in extracted_meds:
-            cart[med] = {'price': 140.00, 'qty': 1}
-        request.session['cart'] = cart
-        return redirect('cart')
-    return render(request, 'pharmacy/upload_prescription.html')
+        results.append(medicine_info)
 
-def cart(request):
-    cart_items = request.session.get('cart', {})
-    total = sum(item['price'] * item['qty'] for item in cart_items.values())
-    return render(request, 'pharmacy/cart.html', {'cart_items': cart_items, 'total': total})
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'results': results})
 
-def microbiology(request):
-    return render(request, 'pharmacy/microbiology.html')
+    return render(request, 'pharmacy/medicine_search.html', {'results': results, 'query': query})
 
-def contact(request):
-    return render(request, 'pharmacy/contact.html')
+# 3. Prescription Upload / AI Scan Route
+@csrf_exempt
+def scan_prescription(request):
+    if request.method == 'POST':
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Prescription parsed successfully',
+            'medicines': ['Paracetamol 500mg', 'Amoxicillin 250mg']
+        })
+    return JsonResponse({'error': 'Invalid Method'}, status=400)

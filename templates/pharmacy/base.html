@@ -2,80 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Pharma - Healthcare & Research Portal</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Classic Original National Pharma Background & Theme */
-        body {
-            background-color: #f0f4f8;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .navbar-custom {
-            background: linear-gradient(135deg, #0d6efd 0%, #004085 100%);
-        }
-        .navbar-brand-custom {
-            color: #ffffff !important;
-            font-weight: 700;
-            font-size: 1.5rem;
-        }
-        .brand-logo-icon {
-            background-color: #ffffff;
-            color: #0d6efd;
-            padding: 6px 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .hero-banner {
-            background: linear-gradient(rgba(13, 110, 253, 0.85), rgba(0, 64, 133, 0.9)), 
-                        url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-            color: white;
-            padding: 80px 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-    </style>
+    <title>National Pharma - Healthcare Portal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow sticky-top py-3">
-        <div class="container">
-            <a class="navbar-brand navbar-brand-custom d-flex align-items-center" href="{% url 'home' %}">
-                <span class="brand-logo-icon"><i class="fa-solid fa-pills"></i></span>
-                National Pharma
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center gap-3">
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'home' %}#about">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'medicine_search' %}">Medicines</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'microbiology' %}">Microbiology</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="{% url 'contact' %}">Contact</a></li>
-                    <li class="nav-item">
-                        <a href="{% url 'upload_prescription' %}" class="btn btn-warning fw-bold rounded-pill px-3">Upload Prescription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'cart' %}" class="btn btn-outline-light rounded-circle"><i class="fa-solid fa-cart-shopping"></i></a>
-                    </li>
-                </ul>
-            </div>
+    <!-- Hero Header Banner -->
+    <header class="hero-container">
+        <h1 class="hero-title">Advanced Healthcare & Microbes Tool</h1>
+        <p class="hero-subtitle">AI-Powered Prescription Reader and Real-time FDA Medicine Search Portal</p>
+        <div>
+            <button class="btn-red" onclick="document.getElementById('scan-box').scrollIntoView()">Scan Prescription</button>
+            <button class="btn-blue" onclick="document.getElementById('search-box').scrollIntoView()">Search Medicines</button>
         </div>
-    </nav>
+    </header>
 
-    <main class="py-4">
-        {% block content %}{% endblock %}
-    </main>
+    <!-- Scan Prescription Box (CSRF Token Included) -->
+    <div id="scan-box" class="card-container">
+        <h3>Scan Doctor's Prescription with AI</h3>
+        <form id="upload-form" method="POST" action="/scan-prescription/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="prescription" required>
+            <br><br>
+            <button type="submit" class="btn-red">Scan with AI</button>
+        </form>
+    </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p class="mb-0">© 2026 National Pharma Research & Healthcare Portal. All rights reserved.</p>
+    <!-- Footer & Contact Section -->
+    <footer class="footer-container">
+        <div class="quotes-slider" id="quote-display">
+            “Wherever the art of Medicine is loved, there is also a love of Humanity.” – Hippocrates
         </div>
+        <p><strong>Official Business Email:</strong> support@nationalpharma.com</p>
+        <p><strong>Toll-Free Support Line:</strong> +91 1800-123-4567</p>
+        <p>© 2026 National Pharma Research & Healthcare Portal. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Quotes Rotator
+        const quotes = [
+            "“Wherever the art of Medicine is loved, there is also a love of Humanity.” – Hippocrates",
+            "“Medicines cure diseases, but only doctors can cure patients.” – Carl Jung",
+            "“The science of operations is a science of the mind.” – Florence Nightingale"
+        ];
+        let idx = 0;
+        setInterval(() => {
+            idx = (idx + 1) % quotes.length;
+            document.getElementById('quote-display').innerText = quotes[idx];
+        }, 5000);
+    </script>
 </body>
 </html>
