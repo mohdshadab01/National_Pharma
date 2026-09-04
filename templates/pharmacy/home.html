@@ -1,46 +1,26 @@
 {% extends 'pharmacy/base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="hero-banner text-center my-4">
-        <h1 class="display-4 fw-bold">Advanced Healthcare & Microbiology</h1>
-        <p class="lead mb-4">AI-Powered Prescription Reader and Real-time FDA Medicine Search Portal</p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'upload_prescription' %}" class="btn btn-warning btn-lg fw-bold px-4">Scan Prescription</a>
-            <a href="{% url 'medicine_search' %}" class="btn btn-light btn-lg text-primary fw-bold px-4">Search Medicines</a>
-        </div>
-    </div>
+<div style="max-width: 800px; margin: 30px auto; padding: 20px; font-family: sans-serif;">
+    <h2 style="color: #0d47a1; text-align: center;">Smart AI Prescription Scanner</h2>
+    <p style="text-align: center; color: #555;">Doctor ke prescription ki photo upload karein aur AI se medicine details scan karein.</p>
 
-    <div id="about" class="row my-5 align-items-center bg-white p-4 rounded shadow-sm">
-        <div class="col-md-6">
-            <h2 class="text-primary fw-bold mb-3"><i class="fa-solid fa-hospital-user me-2"></i>About National Pharma</h2>
-            <p class="text-muted fs-5">
-                National Pharma is dedicated to revolutionizing pharmaceutical access and research. By combining real-time drug database querying with cutting-edge AI vision technology, we empower patients and healthcare workers with accurate prescription decoding and laboratory intelligence.
-            </p>
-            <h4 class="text-primary fw-bold mt-4"><i class="fa-solid fa-eye me-2"></i>Our Vision</h4>
-            <p class="text-muted fs-6">
-                To create a seamless, error-free ecosystem bridging microbiology laboratories, digital pharmacies, and patients using artificial intelligence.
-            </p>
-        </div>
-        <div class="col-md-6 text-center">
-            <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80" alt="About National Pharma" class="img-fluid rounded shadow">
-        </div>
-    </div>
-
-    <div class="my-5">
-        <h3 class="text-center text-primary mb-4 fw-bold">Medical Science Quotes</h3>
-        <div class="row">
-            {% for q in quotes %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 border-0 shadow-sm p-3 bg-white">
-                    <blockquote class="blockquote mb-0 card-body">
-                        <p class="fs-6 text-dark">"{{ q.quote }}"</p>
-                        <footer class="blockquote-footer text-primary text-end mt-2">{{ q.author }}</footer>
-                    </blockquote>
-                </div>
+    <!-- Upload Form -->
+    <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; border: 1px solid #ddd; margin-top: 20px;">
+        <form id="upload-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; display: block; margin-bottom: 8px;">Prescription Image Choose Karein:</label>
+                <input type="file" name="prescription" accept="image/*,.pdf" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
             </div>
-            {% endfor %}
-        </div>
+            
+            <button type="submit" style="background-color: #0d47a1; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; width: 100%;">
+                Scan Prescription with AI
+            </button>
+        </form>
     </div>
+
+    <!-- Results Display Container -->
+    <div id="scan-result-display"></div>
 </div>
 {% endblock %}

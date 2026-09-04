@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 <head>
     <meta charset="UTF-8">
     <title>National Pharma - Healthcare Portal</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<>
 
     <!-- Hero Header Banner -->
     <header class="hero-container">
@@ -51,6 +51,82 @@
             idx = (idx + 1) % quotes.length;
             document.getElementById('quote-display').innerText = quotes[idx];
         }, 5000);
+    </script>
+    <!-- Base HTML Content Above -->
+
+    <!-- JavaScript for Gemini AI Prescription Scanner -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const uploadForm = document.getElementById('upload-form');
+        
+        if (uploadForm) {
+            uploadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                let formData = new FormData(this);
+                let resultDiv = document.getElementById('scan-result-display');
+                
+                // Loading State
+                resultDiv.innerHTML = `
+                    <div style="text-align: center; margin: 25px 0; color: #0d47a1; font-weight: bold;">
+                        <p>🔄 Gemini AI Doctor Prescription Scan kar raha hai, kripya wait karein...</p>
+                    </div>
+                `;
+
+                try {
+                    let response = await fetch('/scan-prescription/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    let data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        if (data.medicines && data.medicines.length > 0) {
+                            let html = `
+                            <div style="margin-top: 25px; overflow-x: auto;">
+                                <h4 style="color: #0d47a1; margin-bottom: 12px;">✅ AI Detected Prescription Details:</h4>
+                                <table border="1" style="width:100%; border-collapse:collapse; text-align:left; font-family: sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                    <thead>
+                                        <tr style="background-color:#0d47a1; color:white;">
+                                            <th style="padding:10px;">Medicine Name</th>
+                                            <th style="padding:10px;">Dosage</th>
+                                            <th style="padding:10px;">Frequency (1-0-1)</th>
+                                            <th style="padding:10px;">Duration</th>
+                                            <th style="padding:10px;">Instructions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+
+                            data.medicines.forEach(med => {
+                                html += `
+                                    <tr style="border-bottom: 1px solid #ddd;">
+                                        <td style="padding:10px;"><b>${med.medicine_name || med.name || 'Unclear'}</b></td>
+                                        <td style="padding:10px;">${med.dosage || '-'}</td>
+                                        <td style="padding:10px; color:#d32f2f; font-weight: bold;">${med.frequency || '-'}</td>
+                                        <td style="padding:10px;">${med.duration || '-'}</td>
+                                        <td style="padding:10px;">${med.instructions || '-'}</td>
+                                    </tr>`;
+                            });
+
+                            html += `
+                                    </tbody>
+                                </table>
+                            </div>`;
+                            resultDiv.innerHTML = html;
+                        } else {
+                            resultDiv.innerHTML = `<p style="color: #d32f2f; font-weight: bold; margin-top: 15px;">⚠️ Prescription me koi medicine detect nahi hui. Kripya saaf photo upload karein.</p>`;
+                        }
+                    } else {
+                        resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top: 15px;">❌ Scan Failed: ${data.message}</p>`;
+                    }
+                } catch (err) {
+                    console.error("Prescription Scan Error:", err);
+                    resultDiv.innerHTML = `<p style="color: red; font-weight: bold; margin-top: 15px;">❌ Error scanning image. Server response issue.</p>`;
+                }
+            });
+        }
+    });
     </script>
 </body>
 </html>
